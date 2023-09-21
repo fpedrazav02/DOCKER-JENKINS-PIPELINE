@@ -1,0 +1,42 @@
+pipeline {
+	tools{
+		// Tools I will be using
+        maven 'mavenProjectInstall'
+	}
+
+    // Change if it needs to run on any VM
+	agent any
+
+    // Execution steps
+	stages {
+	
+			stage('Clone Github repository')
+			{
+				steps{
+				    echo 'Cloning repository...'
+                    git 'https://github.com/Sonal0409/DevOpsClassCodes.git'
+				}
+			}
+			stage('Build Project'){
+				steps{
+                    echo 'Building the project'
+                    sh 'mvn package'
+				}
+			}
+            stage('Build image'){
+				steps{
+                    echo 'Copying artifact to workspace'
+                    sh 'cp /var/lib/jenkins/workspace/project-pipeline/target/addressbook.war .'
+                    echo 'Building image from docker file'
+                    sh 'docker build -t addressbook:$BUILD_NUMBER .'
+				}
+			}
+            stage('Deploy container'){
+				steps{
+                    echo 'Deploying container'
+                    sh 'docker run -d -P addressbook:$BUILD_NUMBER'
+				}
+			}
+	}
+	
+}

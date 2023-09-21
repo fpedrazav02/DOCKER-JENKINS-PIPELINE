@@ -5,11 +5,11 @@ Demonstrate the continuous integration and delivery by building a Docker Jenkins
 
 ---
 ### Used Technology:
-| **Name** |
-| ----------- |
-| Jenkins |
-| GitHub |
-|   a  |
+| **Name** | 
+| ----------- 
+| [Jenkins](https://www.jenkins.io/) |
+| [GitHub](https://github.com/) |
+|   a  | 
 |  b  |
 ---
 
@@ -17,7 +17,12 @@ Demonstrate the continuous integration and delivery by building a Docker Jenkins
 
 First, we check services. If **Jenkins** is down, we start it. 
 
-> Use **root** as needed
+> Use **root** as needed and give permisions to **jenkins** to execute **docker** commands.
+
+```bash
+chmod 777 /var/run/docker.sock
+
+```
 
 #### Check Jenkins
 ---
@@ -41,7 +46,34 @@ service jenkins start
 Next we can explore its basic running status.
 
 ```sh
-service jenkins start
+service jenkins status
 ```
+![alt text](../imgs/jenkinsup.png)
 
-#### Open Jenkins
+> We can then access it locally on port **8080**
+#### Open Jenkins in the browser
+![alt text](../imgs/jenkinsupportal.png)
+---
+
+## 2) Create the pipeline
+
+> Since we want to create a Pipeline that both has ***CI*** and ***CD*** integrations we need to install configuration tools needed.
+
+- In this case we will ***Maven*** as the build tool with a repo own by ***Sonal0409***
+
+---
+
+We enter Jenkins Dashboard directly to Manage Jenkins and Global Tool Configuration
+
+- ***Dashboard*** > ***Global Tool Configuration***
+
+Scroll down to ***Maven*** and install it.
+![alt text](../imgs/maveninstall.png)
+
+---
+### Create Job
+
+Since we need a ***CI***/***CD*** project we will choose the pipeline option.
+
+![alt text](../imgs/pipeline.png)
+
