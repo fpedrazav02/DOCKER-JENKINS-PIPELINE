@@ -31,12 +31,23 @@ pipeline {
                     sh 'docker build -t addressbook:$BUILD_NUMBER .'
 				}
 			}
+			
+			stage('Push image to DockerHub'){
+            steps{
+ 
+                sh 'docker login -u "fpedrazav02" -p "" docker.io'
+			
+                sh 'docker tag addressbook:$BUILD_NUMBER fpedrazav02/myaddressbook'
+                sh 'docker push fpedrazav02/myaddressbook'
+                sh 'docker rmi fpedrazav02/myaddressbook'
+            }
+        }
+
             stage('Deploy container'){
 				steps{
                     echo 'Deploying container'
-                    sh 'docker run -d -P addressbook:$BUILD_NUMBER'
+                    sh 'docker run -d -P fpedrazav02/myaddressbook'
 				}
 			}
 	}
-	
 }
